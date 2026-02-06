@@ -14,9 +14,9 @@ class User(BaseModel):
         from_attributes = True
 
 class FinancialUpload(BaseModel):
-    file_type: str  # csv, xlsx, pdf
-    content: str  # Base64 or path, but for simplicity, assume processed
-
+    file_type: str 
+    content: str 
+    
 class AnalysisResult(BaseModel):
     creditworthiness: float
     risks: list[str]

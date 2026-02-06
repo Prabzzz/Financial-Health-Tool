@@ -11,15 +11,12 @@ def process_file(filename: str, content: bytes) -> dict:
     elif filename.endswith('.xlsx'):
         df = pd.read_excel(io.BytesIO(content))
     elif filename.endswith('.pdf'):
-        # Simple text extraction (assume PDF is text-based; use basic str for demo)
         text = content.decode('utf-8', errors='ignore')
-        # Convert to DF for consistency (dummy parsing)
         lines = text.split('\n')
         df = pd.DataFrame({'lines': lines})
     else:
         raise ValueError("Unsupported file")
     
-    # Extract dimensions (simplified)
     data = {
         "revenue": df.get('revenue', pd.Series([0])).sum(),
         "costs": df.get('costs', pd.Series([0])).sum(),
@@ -37,13 +34,11 @@ def analyze_financials(data: dict) -> dict:
 
     df = pd.DataFrame([data])
 
-    # Convert key columns to numbers (handle missing or invalid values safely)
     numeric_cols = ['revenue', 'costs', 'receivables', 'payables', 'inventory', 'loans']
     for col in numeric_cols:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0)
 
-    # Now safe to calculate
     revenue = df['revenue'].iloc[0] if 'revenue' in df else 0
     costs   = df['costs'].iloc[0]   if 'costs' in df   else 0
 
@@ -66,7 +61,6 @@ def analyze_financials(data: dict) -> dict:
         "Explore short-term financing if receivables are high"
     ]
 
-    # LLM part (keep or comment out if no key)
     try:
         prompt = f"Analyze this SME financial data: {data}. Provide risks, recommendations..."
         response = client.chat.completions.create(

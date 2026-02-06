@@ -1,130 +1,124 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../index.css';
 
 function UserRegister() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [businessType, setBusinessType] = useState('');
+  const [step, setStep] = useState(1);
+  const [form, setForm] = useState({
+    username: '',
+    password: '',
+    businessType: '',
+  });
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
-
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setSuccess(false);
+  const next = () => setStep((s) => s + 1);
+  const back = () => setStep((s) => s - 1);
 
+  const submit = async () => {
     try {
       await axios.post(`${process.env.REACT_APP_API_URL}/users/`, {
-        username,
-        password,
-        business_type: businessType,
+        username: form.username,
+        password: form.password,
+        business_type: form.businessType,
       });
-
-      setSuccess(true);
-      setTimeout(() => navigate('/financials'), 1800);
-    } catch (err) {
-      const msg =
-        err.response?.data?.detail ||
-        'Unable to create account. Please try again.';
-      setError(msg);
+      navigate('/financials');
+    } catch {
+      setError('Account creation failed. Try again.');
     }
   };
 
   return (
-    <div
-      className="container"
-      style={{ maxWidth: '640px' }}  
-    >
-      <div className="card">
-        <div className="header">
-          <h1>Financial Health Platform</h1>
-          <p>Create your business account in under a minute</p>
-        </div>
+    <div className="onboard-wrapper">
+      {/* LEFT */}
+      <div className="onboard-left">
+        <h1>Financial Health Platform</h1>
+        <p>Understand your business numbers. Make smarter decisions.</p>
 
-        <div className="form-container">
-          {success ? (
-            <div className="success">
-              <strong>Account created successfully 🎉</strong>
-              <br />
-              Preparing your financial dashboard...
+        <div className="steps">
+          <span className={step >= 1 ? 'active' : ''}>Account</span>
+          <span className={step >= 2 ? 'active' : ''}>Security</span>
+          <span className={step >= 3 ? 'active' : ''}>Business</span>
+        </div>
+      </div>
+
+      {/* RIGHT */}
+      <div className="onboard-right">
+        {step === 1 && (
+          <>
+            <h2>Create your account</h2>
+            <input
+              placeholder="Username"
+              value={form.username}
+              onChange={(e) =>
+                setForm({ ...form, username: e.target.value })
+              }
+            />
+            <button onClick={next} disabled={!form.username}>
+              Continue
+            </button>
+          </>
+        )}
+
+        {step === 2 && (
+          <>
+            <h2>Secure it</h2>
+            <input
+              type="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={(e) =>
+                setForm({ ...form, password: e.target.value })
+              }
+            />
+            <div className="row">
+              <button className="ghost" onClick={back}>
+                Back
+              </button>
+              <button onClick={next} disabled={form.password.length < 6}>
+                Continue
+              </button>
             </div>
-          ) : (
-            <>
-              <div style={{ marginBottom: '2rem' }}>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.4rem' }}>
-                  Get started
-                </h3>
-                <p style={{ color: '#475569', fontSize: '0.95rem' }}>
-                  Set up your account to track financial performance and insights.
-                </p>
-              </div>
+          </>
+        )}
 
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="username">Username</label>
-                  <input
-                    id="username"
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value.trim())}
-                    placeholder="e.g. prabhakaran_admin"
-                    required
-                    autoFocus
-                  />
-                </div>
+        {step === 3 && (
+          <>
+            <h2>Business category</h2>
 
-                <div className="form-group">
-                  <label htmlFor="password">Password</label>
-                  <input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="At least 6 characters"
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="businessType">Business Category</label>
-                  <select
-                    id="businessType"
-                    value={businessType}
-                    onChange={(e) => setBusinessType(e.target.value)}
-                    required
-                  >
-                    <option value="">Choose your industry</option>
-                    <option value="Manufacturing">Manufacturing</option>
-                    <option value="Retail">Retail</option>
-                    <option value="Services">Services</option>
-                    <option value="E-commerce">E-commerce</option>
-                    <option value="Logistics">Logistics</option>
-                    <option value="Agriculture">Agriculture</option>
-                  </select>
-                </div>
-
-                {error && <div className="error">{error}</div>}
-
-                <button type="submit">Create Account</button>
-
-                <p
-                  style={{
-                    textAlign: 'center',
-                    marginTop: '1rem',
-                    fontSize: '0.85rem',
-                    color: '#64748b',
-                  }}
+            <div className="grid">
+              {[
+                'Manufacturing',
+                'Retail',
+                'Services',
+                'E-commerce',
+                'Logistics',
+                'Agriculture',
+              ].map((t) => (
+                <div
+                  key={t}
+                  className={`pill ${
+                    form.businessType === t ? 'selected' : ''
+                  }`}
+                  onClick={() =>
+                    setForm({ ...form, businessType: t })
+                  }
                 >
-                  Secure registration · No credit card required
-                </p>
-              </form>
-            </>
-          )}
-        </div>
+                  {t}
+                </div>
+              ))}
+            </div>
+
+            {error && <div className="error">{error}</div>}
+
+            <div className="row">
+              <button className="ghost" onClick={back}>
+                Back
+              </button>
+              <button onClick={submit}>Finish</button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

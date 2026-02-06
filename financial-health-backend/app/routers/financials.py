@@ -19,7 +19,7 @@ async def upload_financial(user_id: int, file: UploadFile = File(...), db: Sessi
 
     return {
         "message": "Data uploaded and encrypted",
-        "data_id": db_data.id   # ← important line added
+        "data_id": db_data.id  
     }
 
 @router.get("/analyze/{data_id}", response_model=AnalysisResult)
@@ -29,18 +29,14 @@ def analyze(data_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Data not found")
     return analyze_financials(data)
 
-# Mock Banking API Integration (Max 2: Bank1 and Payment1)
 @router.get("/bank-integrate/{user_id}")
 def integrate_bank(user_id: int):
-    # Mock: Fetch from fictional Bank API
     return {"mock_bank_data": "Fetched balance: 10000"}
 
 @router.get("/payment-integrate/{user_id}")
 def integrate_payment(user_id: int):
-    # Mock: Fetch from fictional Payment API
     return {"mock_payment_data": "Transactions: 50"}
 
 @router.get("/gst-import/{user_id}")
 def import_gst(user_id: int):
-    # Optional mock GST import
     return {"mock_gst_data": "GST returns imported"}

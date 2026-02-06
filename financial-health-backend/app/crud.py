@@ -1,12 +1,8 @@
 from sqlalchemy.orm import Session
 from .models import User, FinancialData
 from .schemas import UserCreate
-# from passlib.context import CryptContext  # Add passlib to requirements if needed; pip install passlib[bcrypt]
-
-# pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def create_user(db: Session, user: UserCreate):
-    # hashed_password = pwd_context.hash(user.password)
     db_user = User(username=user.username, password=user.password, business_type=user.business_type)
     db.add(db_user)
     db.commit()
