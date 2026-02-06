@@ -31,7 +31,7 @@ function AnalysisDashboard({ dataId }) {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="value" fill="#8884d8" />
+        <Bar dataKey="value" fill="#0f766e" />
       </BarChart>
       <ul>
         <li>Risks: {analysis.risks.join(', ')}</li>
