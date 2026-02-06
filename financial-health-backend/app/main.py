@@ -1,10 +1,8 @@
-# app/main.py
-
 from dotenv import load_dotenv
 load_dotenv()
 
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware   # ← add this import
+from fastapi.middleware.cors import CORSMiddleware   
 
 from app.database import engine
 from app.base import Base
@@ -12,25 +10,23 @@ from app.routers import users, financials
 
 app = FastAPI()
 
-# MUST be right after app = FastAPI() and BEFORE any routes/routers
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         "http://localhost:3001",
+        "https://financial-health-tool-azure.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# After app.add_middleware(...)
 @app.options("/{path:path}")
 async def options():
     return {}
 
-# Create tables (keep this)
 Base.metadata.create_all(bind=engine)
 
 app.include_router(users.router, prefix="/users", tags=["users"])
