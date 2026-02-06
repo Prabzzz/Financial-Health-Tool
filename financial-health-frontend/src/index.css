@@ -1,0 +1,149 @@
+/* src/index.css - refreshed professional color theme */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+  background-color: #f1f5f9; /* cool light slate */
+  color: #0f172a; /* deep slate text */
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 480px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.12);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+  color: #ecfeff;
+  padding: 2.6rem 2rem;
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  opacity: 0.9;
+  font-size: 1.05rem;
+}
+
+/* Form */
+.form-container {
+  padding: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-weight: 500;
+  color: #334155;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #f8fafc;
+  transition: all 0.2s ease;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #0f766e;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.18);
+}
+
+/* Primary Button */
+button {
+  width: 100%;
+  padding: 0.9rem;
+  background: #0f766e;
+  color: #ecfeff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background: #115e59;
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Messages */
+.error {
+  color: #b91c1c;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.success {
+  color: #065f46;
+  background: #ecfdf5;
+  padding: 1rem;
+  border-radius: 10px;
+  margin: 1.5rem 0;
+  text-align: center;
+  border: 1px solid #a7f3d0;
+}
+
+/* Link Button */
+.link-btn {
+  background: none;
+  border: none;
+  color: #0f766e;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-top: 1rem;
+}
+
+.link-btn:hover {
+  color: #115e59;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .container {
+    margin: 20px auto;
+    padding: 0 16px;
+  }
+
+  .header h1 {
+    font-size: 1.6rem;
+  }
+}
